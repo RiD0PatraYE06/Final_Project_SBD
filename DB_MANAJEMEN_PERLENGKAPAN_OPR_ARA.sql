@@ -79,14 +79,21 @@ CREATE TABLE tabel_pengadaan (
 CREATE TABLE tabel_aset_barang (
     id_aset_barang INT AUTO_INCREMENT PRIMARY KEY,
     nama_barang VARCHAR(150) NOT NULL,
-    id_kategori INT NOT NULL,
     id_lokasi_barang INT NOT NULL,
     id_pengadaan INT DEFAULT NULL,
     jumlah_stok INT DEFAULT 1,
     status_ketersediaan ENUM('Tersedia', 'Dipinjam', 'Habis', 'Perlu_Refill', 'Rusak') DEFAULT 'Tersedia', -- Ditambahkan status 'Rusak' demi sinkronisasi kondisi lapangan
-    CONSTRAINT fk_barang_kategori FOREIGN KEY (id_kategori) REFERENCES tabel_kategori(id_kategori) ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT fk_barang_lokasi FOREIGN KEY (id_lokasi_barang) REFERENCES tabel_lokasi_barang(id_lokasi_barang) ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT fk_barang_pengadaan FOREIGN KEY (id_pengadaan) REFERENCES tabel_pengadaan(id_pengadaan) ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+-- Buat tabel jembatan baru (Bebas Redundansi, Lolos Uji 1NF)
+CREATE TABLE tabel_relasi_kategori (
+    id_relasi_kategori INT AUTO_INCREMENT PRIMARY KEY,
+    id_aset_barang INT NOT NULL,
+    id_kategori INT NOT NULL,
+    CONSTRAINT fk_pivot_barang FOREIGN KEY (id_aset_barang) REFERENCES tabel_aset_barang(id_aset_barang) ON DELETE CASCADE,
+    CONSTRAINT fk_pivot_kategori FOREIGN KEY (id_kategori) REFERENCES tabel_kategori(id_kategori) ON DELETE CASCADE
 );
 
 CREATE TABLE tabel_peminjaman (
