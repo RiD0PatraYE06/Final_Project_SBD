@@ -107,6 +107,7 @@ CREATE TABLE tabel_detail_pinjam (
     id_detail_pinjam INT AUTO_INCREMENT PRIMARY KEY, 
     id_peminjaman INT NOT NULL,
     id_aset_barang INT NOT NULL,
+    jumlah_pinjam INT NOT NULL DEFAULT 1,
     kondisi_keluar VARCHAR(150) NOT NULL,
     kondisi_masuk VARCHAR(150) DEFAULT 'Belum Kembali',
     CONSTRAINT fk_detail_peminjaman FOREIGN KEY (id_peminjaman) REFERENCES tabel_peminjaman(id_peminjaman) ON DELETE CASCADE ON UPDATE CASCADE,
