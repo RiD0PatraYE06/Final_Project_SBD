@@ -7,7 +7,7 @@ db.coordination_logs.createIndex({ timestamp: -1 });
 db.coordination_logs.insertMany([
 {
     divisi: "OPR",
-    anggota: "Rayhan",
+    anggota: "[Nama]",
     pesan: "Speaker dipindahkan ke Hall A",
     prioritas: "high",
     timestamp: new Date()
