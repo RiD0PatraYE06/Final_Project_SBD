@@ -87,6 +87,22 @@ CREATE TABLE tabel_aset_barang (
     CONSTRAINT fk_barang_pengadaan FOREIGN KEY (id_pengadaan) REFERENCES tabel_pengadaan(id_pengadaan) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
+CREATE TABLE tabel_pemenuhan_permintaan (
+    id_pemenuhan_permintaan    INT AUTO_INCREMENT PRIMARY KEY,
+    id_detail_request INT  NOT NULL,
+    id_aset_barang    INT  NOT NULL,   -- aset yang dipakai untuk fulfill
+    jumlah_dipenuhi   INT  NOT NULL CHECK (jumlah_dipenuhi > 0),
+    tgl_dipenuhi   DATETIME DEFAULT CURRENT_TIMESTAMP,
+    catatan_fulfillment TEXT DEFAULT NULL,
+
+    CONSTRAINT fk_pp_detail_request
+        FOREIGN KEY (id_detail_request) REFERENCES tabel_detail_request(id_detail_request)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_pp_aset
+        FOREIGN KEY (id_aset_barang) REFERENCES tabel_aset_barang(id_aset_barang)
+        ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
 -- Buat tabel jembatan baru (Bebas Redundansi, Lolos Uji 1NF)
 CREATE TABLE tabel_relasi_kategori (
     id_relasi_kategori INT AUTO_INCREMENT PRIMARY KEY,
