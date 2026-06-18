@@ -21,6 +21,7 @@ router.post('/barang/maintenance/selesai', barangController.selesaiPerbaikan);
 router.get('/request', requestController.getAllRequest);
 router.post('/request/aju', requestController.ajukanRequest);
 router.post('/request/setujui', requestController.setujuiRequest);
+router.post('/request/tolak', requestController.tolakRequest);
 router.post('/request/finalisasi', requestController.finalisasiBarangPengadaan);
 router.post('/request/fulfill', requestController.penuhiRequest);
 

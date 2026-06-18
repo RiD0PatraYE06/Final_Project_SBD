@@ -131,3 +131,15 @@ http://localhost:5000/api/peminjaman/detail
   "jumlah_pinjam": 99, 
   "kondisi_keluar": "Mencoba pinjam se-RT"
 }
+
+Input barang:
+POST
+http://localhost:5000/api/barang
+{
+  "nama_barang": "Kaos kaki 100rb",
+  "total_stok": 20,
+  "status_ketersediaan": "Tersedia",
+  "id_kategori": 12,
+  "id_lokasi_barang": 14,
+  "operator" : "Kasubdiv OPR"
+}

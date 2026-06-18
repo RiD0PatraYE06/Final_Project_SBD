@@ -187,13 +187,72 @@ const penuhiRequest = async (req, res) => {
     }
 };
 
-// ⚠️ JANGAN LUPA daftarkan namanya di bagian module.exports paling bawah file requestController.js ya!
-// Contoh: module.exports = { getAllRequest, ajukanRequest, setujuiRequest, finalisasiBarangPengadaan, penuhiRequest };
+// ====================================================================
+// ❌ FUNGSI PENOLAKAN REQUEST (REVISED & SINKRON TOTAL)
+// ====================================================================
+const tolakRequest = async (req, res) => {
+    console.log("=====================================");
+    console.log("PROSES PENOLAKAN REQUEST (REVISED):", req.body);
+    console.log("=====================================");
+
+    // Ambil info divisi dan PIC dari request body agar konsisten dengan alur setujuiRequest
+    const { id_request, operator_opr, catatan_penolakan, nama_divisi, nama_pic } = req.body;
+    const connection = await db.getConnection();
+
+    try {
+        await connection.beginTransaction();
+
+        // 1. 🔍 Cari data request di MySQL untuk mengambil nama barang dan jumlahnya otomatis
+        const [reqRows] = await connection.query("SELECT * FROM tabel_request WHERE id_request = ?", [id_request]);
+        if (reqRows.length === 0) {
+            await connection.rollback();
+            return res.status(404).json({ success: false, message: "Data request tidak ditemukan di MySQL!" });
+        }
+        const dataReq = reqRows[0];
+
+        // 2. 📝 UPDATE MySQL: Ubah status_request menjadi 'Ditolak'
+        const queryTolak = `
+            UPDATE tabel_request 
+            SET status_request = 'Ditolak' 
+            WHERE id_request = ?
+        `;
+        await connection.query(queryTolak, [id_request]);
+
+        // 3. 🔴 TRIGGER MONGODB: Masukkan semua field required & gunakan ENUM 'TOLAK_REQUEST'
+        await CoordinationLog.create({
+            id_request: id_request,
+            nama_divisi: nama_divisi,          // Diambil dari req.body Thunder Client
+            nama_pic: nama_pic,                // Diambil dari req.body Thunder Client
+            nama_barang_request: dataReq.nama_barang_request, // Otomatis ditarik dari baris MySQL
+            jumlah: dataReq.jumlah_kebutuhan,  // Otomatis ditarik dari baris MySQL
+            aksi: 'TOLAK_REQUEST',             // 🔥 Diubah sesuai standardisasi ENUM kelompokmu
+            keterangan: `REQUEST DITOLAK: Permintaan aset '${dataReq.nama_barang_request}' sebanyak ${dataReq.jumlah_kebutuhan} unit RESMI DITOLAK oleh [${operator_opr}]. Alasan: ${catatan_penolakan || 'Tidak ada alasan spesifik.'}`,
+            operator_opr: operator_opr
+        });
+
+        await connection.commit(); // Kunci komitmen transaksi ACID
+
+        res.status(200).json({
+            success: true,
+            message: `Sukses (ACID)! Request ID #${id_request} resmi ditolak. Status MySQL berganti jadi 'Ditolak' dan alasan dicatat di MongoDB coordination_logs!`
+        });
+
+    } catch (error) {
+        await connection.rollback();
+        res.status(500).json({ success: false, error: "Gagal menolak request: " + error.message });
+    } finally {
+        connection.release();
+    }
+};
+
+// ⚠️ JANGAN LUPA tambahkan 'tolakRequest' di module.exports paling bawah file ya, Wok!
+// Contoh: module.exports = { getAllRequest, ajukanRequest, setujuiRequest, finalisasiBarangPengadaan, penuhiRequest, tolakRequest };
 
 module.exports = {
     getAllRequest,
     ajukanRequest,
     setujuiRequest,
     finalisasiBarangPengadaan,
-    penuhiRequest
+    penuhiRequest,
+    tolakRequest
 };

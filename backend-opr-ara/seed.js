@@ -31,7 +31,7 @@ const runSeeding = async () => {
         const qAnggota = `
             INSERT INTO tabel_anggota_opr (nama_anggota, contact_anggota_opr, jabatan)
             VALUES
-                ('Kasubdiv OPR 1', '081601020001', 'Kepala Subdivisi'),
+                ('Kasubdiv OPR', '081601020001', 'Kepala Subdivisi'),
                 ('Stafli OPR 1', '081601030001', 'Staf Ahli'),
                 ('Stafli OPR 2', '081601030002', 'Staf Ahli'),
                 ('Stafli OPR 3', '081601030003', 'Staf Ahli'),
@@ -53,17 +53,17 @@ const runSeeding = async () => {
             INSERT INTO tabel_lokasi_barang (nama_lokasi, kategori_lokasi, keterangan_tambahan)
             VALUES
                 ('Perpustakaan Lantai 6', 'Perpustakaan', 'Tempat penyimpanan barang-barang di Perpustakaan'),
-                ('Lobby TW2', 'Tower 2', 'Lobby di lantai 1 Tower 2'),
-                ('Kolam TW2', 'Tower 2', 'Kolam di lantai 1 Tower 2'),
-                ('Ruang TU', 'Tower 2', 'Kantor Tata Usaha di lantai 2 Tower 2'),
-                ('Auditorium TW 2', 'Tower 2', 'Auditorium di lantai 2 Tower 2'),
+                ('Lobby TW2', 'Tower 2', 'Lobby di lantai 1 Tower TW 2'),
+                ('Kolam TW2', 'Tower 2', 'Kolam di lantai 1 Tower TW 2'),
+                ('Ruang TU', 'Tower 2', 'Kantor Tata Usaha di lantai 2 Tower TW 2'),
+                ('Auditorium TW 2', 'Tower 2', 'Auditorium di lantai 2 Tower TW 2'),
                 ('Ruang Kelas 702', 'Tower 2', 'Ruang kelas lantai 7'),
                 ('Ruang Kelas 703', 'Tower 2', 'Ruang kelas lantai 7'),
                 ('Ruang Kelas 704', 'Tower 2', 'Ruang kelas lantai 7'),
                 ('Ruang Kelas 705', 'Tower 2', 'Ruang kelas lantai 7'),
-                ('Lab SOC', 'Tower 2', 'Laboratorium Security Operations Center di lantai 9 Tower 2'),
-                ('Lab KCKS', 'Tower 2', 'Laboratorium Kota Cerdas dan Keamanan Siber di lantai 9 Tower 2'),
-                ('Multifunction Room', 'Tower 2', 'Ruang serbaguna di lantai 11 Tower 2'),
+                ('Lab SOC', 'Tower 2', 'Laboratorium Security Operations Center di lantai 9 Tower TW 2'),
+                ('Lab KCKS', 'Tower 2', 'Laboratorium Kota Cerdas dan Keamanan Siber di lantai 9 Tower TW 2'),
+                ('Multifunction Room', 'Tower 2', 'Ruang serbaguna di lantai 11 Tower TW 2'),
                 ('Area Roadshow', 'Tempat Roadshow', 'Sekolah SMA/SMK tempat pelaksanaan kegiatan roadshow'),
                 ('Dibawa oleh Staf OPR', 'Anggota OPR', 'Aset yang dipegang langsung oleh internal panitia OPR');
         `;
@@ -164,6 +164,29 @@ const runSeeding = async () => {
             ((SELECT id_master_barang FROM tabel_master_barang WHERE nama_barang = 'Karpet Merah Panggung (Meteran)'), (SELECT id_lokasi_barang FROM tabel_lokasi_barang WHERE nama_lokasi = 'Kolam TW2'), 12, 'Tersedia');
         `;
         await db.query(qStokLokasi);
+
+        // =========================================================
+        // ⚡ UPDATE RELASI: Mengikat id_pengadaan ke tabel_master_barang
+        // =========================================================
+        console.log('=> Menyinkronkan id_pengadaan ke tabel_master_barang...');
+        const qUpdatePengadaanBarang = `
+            UPDATE tabel_master_barang 
+            SET id_pengadaan = CASE nama_barang
+                WHEN 'X-Banner & Stand Roadshow' THEN 1
+                WHEN 'Paket Lighting Panggung' THEN 2
+                WHEN 'Audio Control & Mixer Board' THEN 3
+                WHEN 'Speaker Besar Panggung (Line Array)' THEN 4
+                WHEN 'Karpet Merah Panggung (Meteran)' THEN 5
+            END
+            WHERE nama_barang IN (
+                'X-Banner & Stand Roadshow',
+                'Paket Lighting Panggung',
+                'Audio Control & Mixer Board',
+                'Speaker Besar Panggung (Line Array)',
+                'Karpet Merah Panggung (Meteran)'
+            );
+        `;
+        await db.query(qUpdatePengadaanBarang);
 
         console.log('🏁 ✅ BOOM! Seluruh siklus data (Master & Transaksi) sukses di-inject ke MySQL!');
     } catch (error) {

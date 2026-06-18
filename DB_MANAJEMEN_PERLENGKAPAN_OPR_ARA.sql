@@ -121,6 +121,7 @@ CREATE TABLE tabel_peminjaman (
     id_peminjaman INT AUTO_INCREMENT PRIMARY KEY,
     id_anggota_opr INT NOT NULL,
     tgl_pinjam DATETIME DEFAULT CURRENT_TIMESTAMP,
+    tgl_kembali DATETIME DEFAULT NULL,
     CONSTRAINT fk_peminjaman_anggota FOREIGN KEY (id_anggota_opr) REFERENCES tabel_anggota_opr(id_anggota_opr) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
@@ -134,11 +135,3 @@ CREATE TABLE tabel_detail_pinjam (
     CONSTRAINT fk_detail_peminjaman FOREIGN KEY (id_peminjaman) REFERENCES tabel_peminjaman(id_peminjaman) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_detail_stok_lokasi FOREIGN KEY (id_stok_lokasi) REFERENCES tabel_stok_lokasi_barang(id_stok_lokasi) ON UPDATE CASCADE ON DELETE RESTRICT
 );
-
-
--- ========================================================
--- ALTER TABLE untuk menambahkan kolom baru pada tabel_detail_pinjam
--- ========================================================
-
-ALTER TABLE tabel_peminjaman
-ADD COLUMN tgl_kembali TIMESTAMP NULL DEFAULT NULL;
