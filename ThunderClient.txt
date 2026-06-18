@@ -1,0 +1,133 @@
+Request pertama:
+POST
+http://localhost:5000/api/request/aju
+{
+  "id_pic_request": 6,
+  "nama_divisi": "Subdivisi ExploIT",
+  "nama_pic": "PIC ExploIT 3",
+  "nama_barang_request": "HT Panitia",
+  "jumlah_kebutuhan": 15
+}
+
+
+Pengadaan barang:
+POST
+http://localhost:5000/api/request/setujui
+{
+  "id_request": 6, 
+  "metode_pengadaan": "Sewa_Vendor",
+  "id_vendor": 2,
+  "operator_opr": "Staf OPR 1",
+  "nama_divisi": "Divisi ExploIT",
+  "nama_pic": "PIC ExploIT 3",
+  "nama_barang": "HT Panitia",
+  "jumlah": 15
+}
+
+
+Input data barang:
+POST
+http://localhost:5000/api/request/finalisasi
+{
+  "id_request": 6,
+  "nama_barang": "HT Panitia BaoFeng",
+  "total_stok": 15,
+  "id_kategori": 4, 
+  "id_lokasi_barang": 14,
+  "operator_opr": "Staf OPR 1"
+}
+
+
+Liat isi tabel barang
+GET
+http://localhost:5000/api/barang
+
+
+TV rusak:
+POST
+http://localhost:5000/api/barang/maintenance
+{
+  "id_stok_lokasi": 7,
+  "keterangan_rusak": "Layar bagian pojok kanan atas bergaris hijau (flickering) setelah dipake pemutaran video closing CFD.",
+  "operator": "Staf OPR 7"
+}
+
+
+Mic rusak:
+POST
+http://localhost:5000/api/barang/maintenance
+{
+  "id_stok_lokasi": 3,
+  "keterangan_rusak": "Mic tidak bisa menyala sama sekali meskipun sudah diganti dengan baterai baru. Kemungkinan ada masalah pada sirkuit internal atau saklar tombol powernya.",
+  "operator": "Staf OPR 5"
+}
+
+
+TV selesai:
+POST
+http://localhost:5000/api/barang/maintenance/selesai
+{
+  "id_stok_lokasi": 7,
+  "operator": "Staf OPR 1"
+}
+
+
+Kabel olor rusak:
+POST
+http://localhost:5000/api/barang/maintenance
+{
+  "id_stok_lokasi": 8,
+  "keterangan_rusak": "Kabel olor mengalami hubungan arus pendek (konslet) karena isolator karetnya robek akibat tidak sengaja terjepit roda panggung portabel yang berat saat loading barang.",
+  "operator": "Staf OPR 4"
+}
+
+
+OPR id 6 pinjem:
+POST
+http://localhost:5000/api/peminjaman
+{
+  "id_anggota_opr": 6
+}
+
+
+OPR id 6 pinjem laptop
+POST
+http://localhost:5000/api/peminjaman/detail
+{
+  "id_peminjaman": 1,
+  "id_stok_lokasi": 1,
+  "jumlah_pinjam": 1,
+  "kondisi_keluar": "Bagus, baterai full 100%"
+}
+
+
+lanjutan dari ExploIT:
+POST
+http://localhost:5000/api/request/fulfill
+{
+  "id_request": 6,
+  "id_stok_lokasi": 17,
+  "jumlah_dipenuhi": 15,
+  "catatan_fulfillment": "15 Unit HT BaoFeng diserahkan langsung ke PIC ExploIT di Lobby Tower 2 dalam kondisi menyala dengan channel default ARA."
+}
+
+Laptop yg dipinjem sudah balek:
+POST
+http://localhost:5000/api/peminjaman/kembali
+{
+  "id_peminjaman": 1,
+  "id_stok_lokasi": 1,
+  "jumlah_kembali": 1,
+  "kondisi_masuk": "Barang kembali lengkap, bodi bersih, sudah di-shutdown.",
+  "operator": "Staf OPR 1"
+}
+
+Tes pinjem barang banyak:
+POST
+http://localhost:5000/api/peminjaman/detail
+{
+  "id_peminjaman": 1,
+  "id_stok_lokasi": 1,
+  "jumlah_pinjam": 99, 
+  "kondisi_keluar": "Mencoba pinjam se-RT"
+}

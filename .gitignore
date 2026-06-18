@@ -1,0 +1,33 @@
+# ==========================================
+# BACKEND (Node.js) PROTECTION
+# ==========================================
+# Mengunci folder node_modules gembrot di dalam subfolder backend
+backend-opr-ara/node_modules/
+
+# Mengunci file environment rahasia biar credential DB-mu gak tersebar
+backend-opr-ara/.env
+
+# (Opsional) Mengunci file log hasil debug npm jika terjadi error
+backend-opr-ara/*.log
+
+
+# ==========================================
+# FRONTEND PROTECTION (Jika nanti ada/pakai React/Vue/Next.js)
+# ==========================================
+# Jaga-jaga kalau temenmu bikin folder frontend sejajar dengan backend
+frontend/node_modules/
+frontend/.env
+frontend/dist/
+frontend/build/
+
+
+# ==========================================
+# SYSTEM & IDE FILES (Bikin rapi repo GitHub)
+# ==========================================
+# Mengunci folder settingan local VS Code masing-masing laptop kelompok
+.vscode/
+
+# Mengunci file sampah bawaan Windows (biar gak ngotorin commit)
+Thumbs.db
+Desktop.ini
+.DS_Store
