@@ -18,12 +18,22 @@ http://localhost:5000/api/request/setujui
   "metode_pengadaan": "Sewa_Vendor",
   "id_vendor": 2,
   "operator_opr": "Staf OPR 1",
-  "nama_divisi": "Divisi ExploIT",
+  "nama_divisi": "Subivisi ExploIT",
   "nama_pic": "PIC ExploIT 3",
   "nama_barang": "HT Panitia",
   "jumlah": 15
 }
 
+Tolak request:
+POST
+http://localhost:5000/api/request/tolak
+{
+  "id_request": 7,
+  "operator_opr": "Kasubdiv OPR",
+  "nama_divisi": "Subdivisi ExploIT",
+  "nama_pic": "PIC ExploIT 3",
+  "catatan_penolakan": "Maaf ngab, kuota anggaran sewa vendor bulan ini sudah limit untuk panggung utama ARA, silakan pakai HT internal divisi masing-masing."
+}
 
 Input data barang:
 POST
