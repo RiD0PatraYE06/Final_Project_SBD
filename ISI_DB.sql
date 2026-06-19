@@ -185,7 +185,26 @@ INSERT INTO tabel_stok_lokasi_barang (id_master_barang, id_lokasi_barang, jumlah
 -- Barang dengan Multi-Kategori
 -- =========================================================
 
--- Ikat Mixer Board ke kategori Perangkat Audio (Jika belum ada)
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (1, 4);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (2, 3);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (2, 4);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (3, 3);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (3, 4);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (4, 4);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (4, 5);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (5, 7);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (6, 7);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (6, 8);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (7, 9);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (7, 10);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (8, 9);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (8, 10);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (9, 9);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (9, 10);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (10, 4);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (10, 6);
 INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (11, 3);
--- Ikat Mixer Board yang sama ke kategori Perangkat Elektronik
 INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (11, 4);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (12, 3);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (12, 4);
+INSERT INTO tabel_relasi_kategori (id_master_barang, id_kategori) VALUES (13, 1);
